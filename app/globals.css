@@ -1,0 +1,315 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #141414;
+
+  --caderno-linha: rgba(80, 140, 255, 0.18);
+  --caderno-altura-linha: 36px;
+  --caderno-margem-x: 56px;
+  --caderno-margem-cor: rgba(255, 80, 80, 0.42);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+  font-family:
+    "Segoe UI",
+    system-ui,
+    -apple-system,
+    Arial,
+    sans-serif;
+}
+
+/* Tema global: caderno nostálgico */
+.caderno {
+  min-height: 100vh;
+  background-color: #fff;
+  background-image:
+    linear-gradient(to bottom, var(--caderno-linha) 1px, transparent 1px),
+    linear-gradient(
+      to right,
+      transparent 0,
+      transparent calc(var(--caderno-margem-x) - 4px),
+      var(--caderno-margem-cor) calc(var(--caderno-margem-x) - 4px),
+      var(--caderno-margem-cor) calc(var(--caderno-margem-x) - 1px),
+      transparent calc(var(--caderno-margem-x) - 1px)
+    );
+  background-size:
+    100% var(--caderno-altura-linha),
+    100% 100%;
+  background-position:
+    0 18px,
+    0 0;
+}
+
+.containerCard {
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 14px;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.06);
+}
+
+.boardContainer {
+  width: 100%;
+  max-width: 360px;
+  margin: 18px auto 0 auto;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  justify-content: center;
+  gap: 10px;
+}
+
+.cell {
+  width: clamp(80px, 10vw, 96px);
+  height: clamp(80px, 10vw, 96px);
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  border: 2px solid rgba(0, 0, 0, 0.26);
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow:
+    inset 0 0 0 2px rgba(0, 0, 0, 0.04),
+    1px 1px 0 rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  transition:
+    transform 120ms ease,
+    filter 120ms ease,
+    box-shadow 120ms ease;
+}
+
+.cell:hover {
+  filter: saturate(1.03);
+  box-shadow:
+    inset 0 0 0 2px rgba(0, 0, 0, 0.05),
+    2px 2px 0 rgba(0, 0, 0, 0.1);
+}
+
+.cell:active {
+  transform: translateY(1px);
+}
+
+.cell:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.cellHighlight {
+  box-shadow:
+    inset 0 0 0 2px rgba(0, 0, 0, 0.05),
+    0 0 0 3px rgba(20, 20, 20, 0.12),
+    2px 2px 0 rgba(0, 0, 0, 0.1);
+}
+
+.cellValue {
+  font-size: clamp(36px, 5vw, 56px);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.08);
+}
+
+/* Layout do jogo: bloco central com sidebar + board */
+.gameWrap {
+  width: min(860px, calc(100% - 32px));
+  margin: 26px auto;
+  padding: 18px;
+}
+
+.gameTitle {
+  margin: 0 0 14px 0;
+  text-align: center;
+  font-size: clamp(30px, 3.6vw, 44px);
+  line-height: 1.05;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  transform: rotate(-0.2deg);
+}
+
+.gameLayout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 18px;
+  align-items: start;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sidebarLine {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.playerMini {
+  padding: 10px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.playerMiniLabel {
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.playerMiniName {
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.boardArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+@media (max-width: 900px) {
+  .gameWrap {
+    margin: 16px auto;
+    padding: 14px;
+  }
+
+  .gameLayout {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    order: 0;
+  }
+
+  .boardArea {
+    order: 1;
+  }
+}
+
+.cellValueX {
+  color: rgba(10, 24, 48, 0.92);
+  text-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.1),
+    0 0 10px rgba(0, 70, 200, 0.1);
+}
+
+.cellValueO {
+  color: rgba(0, 120, 70, 0.92);
+  text-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.1),
+    0 0 10px rgba(0, 160, 90, 0.1);
+}
+
+.marcaTexto {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: rgba(255, 235, 59, 0.55);
+}
+
+/* Overlay de resultado + confete (CSS-only) */
+.overlayRoot {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  z-index: 50;
+}
+
+.overlayWin {
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(6px);
+}
+
+.overlayDraw {
+  background: rgba(245, 245, 245, 0.88);
+  backdrop-filter: blur(4px);
+}
+
+.overlayCard {
+  width: min(520px, 100%);
+  border-radius: 18px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
+  padding: 22px 18px;
+  position: relative;
+  overflow: hidden;
+}
+
+.overlayShake {
+  animation: overlayShake 420ms ease-in-out 1;
+}
+
+@keyframes overlayShake {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  15% {
+    transform: translate3d(-6px, 0, 0);
+  }
+  30% {
+    transform: translate3d(6px, 0, 0);
+  }
+  45% {
+    transform: translate3d(-4px, 0, 0);
+  }
+  60% {
+    transform: translate3d(4px, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.confetti {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.confettiPiece {
+  position: absolute;
+  top: -12px;
+  left: var(--x);
+  width: 10px;
+  height: 14px;
+  background: var(--c);
+  border-radius: 3px;
+  transform: rotate(var(--rot));
+  opacity: 0.95;
+  animation: confettiFall var(--dur) ease-in var(--delay) infinite;
+}
+
+@keyframes confettiFall {
+  0% {
+    transform: translate3d(0, -20px, 0) rotate(var(--rot));
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(-40px, 110vh, 0) rotate(calc(var(--rot) + 220deg));
+    opacity: 0;
+  }
+}
