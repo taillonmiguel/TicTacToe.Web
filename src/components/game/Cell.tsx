@@ -23,13 +23,14 @@ export function Cell(
       type="button"
       className={[
         "grid place-items-center",
-        "w-20 h-20 md:w-24 md:h-24",
-        "rounded-xl border-2",
+        "w-full aspect-square",
+        "p-[clamp(8px,2vw,14px)]",
+        "rounded-xl",
         highlight
-          ? "bg-green-100/70 border-green-700/30 shadow animate-pulse"
-          : "bg-white/70 shadow-sm",
-        "transition-transform",
-        "enabled:hover:shadow enabled:active:translate-y-0.5",
+          ? "bg-green-100/60 ring-2 ring-green-700/20 shadow-sm"
+          : "bg-transparent",
+        "transition-colors transition-transform",
+        "enabled:hover:bg-white/45 enabled:active:translate-y-0.5",
         "disabled:cursor-not-allowed disabled:opacity-60",
         className,
       ]
@@ -40,7 +41,7 @@ export function Cell(
       <span
         className={[
           valueClassName,
-          "text-4xl md:text-5xl font-extrabold leading-none",
+          "text-[clamp(28px,8vw,52px)] font-extrabold leading-none",
         ].join(" ")}
       >
         {value ?? ""}

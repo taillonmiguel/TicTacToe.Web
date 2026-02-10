@@ -82,6 +82,50 @@ A aplicação estará disponível em:
 http://localhost:3000
 ```
 
+ou IPv4
+
+```
+http://192.168.1.14:3000
+```
+
+## Configuração da URL do Backend (API + SignalR)
+
+O frontend pode apontar para `localhost` (mesma máquina) ou para o **IPv4 da sua máquina** (para jogar em 2 dispositivos na mesma rede).
+
+### Como obter o IPv4 no Windows
+
+1. Abra o **Prompt de Comando (CMD)** ou **PowerShell**
+2. Execute:
+
+```
+ipconfig
+```
+
+3. Procure pelo adaptador que você está utilizando (normalmente Adaptador Ethernet ou Wi-Fi) e copie o valor de:
+
+- Endereço IPv4 (exemplo: 192.168.1.14)
+
+**Não utilize**:
+
+- 0.0.0.0
+- IPs de adaptadores virtuais como vEthernet (Default Switch) ou WSL
+
+### Opção A — Jogando no mesmo PC (localhost)
+
+Crie/edite o arquivo `.env.local` na raiz do projeto:
+
+NEXT_PUBLIC_API_URL=http://localhost:8082  
+NEXT_PUBLIC_HUB_URL=http://localhost:8082/hubs/tictactoe
+
+### Opção B — Jogando em 2 dispositivos na mesma rede (IPv4)
+
+Use o IPv4 do seu computador (ex.: `192.168.1.14`):
+
+NEXT_PUBLIC_API_URL=http://192.168.1.14:8082  
+NEXT_PUBLIC_HUB_URL=http://192.168.1.14:8082/hubs/tictactoe
+
+Depois de alterar o `.env.local`, pare e rode o frontend novamente (`npm run dev`) para o Next.js recarregar as variáveis.
+
 ---
 
 ## Fluxo de jogo

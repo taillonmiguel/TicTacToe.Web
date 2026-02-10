@@ -29,7 +29,10 @@ export function AtalhosAbaCaderno() {
   const pathname = usePathname();
 
   return (
-    <nav aria-label="Atalhos" className="flex flex-wrap justify-center gap-2">
+    <nav
+      aria-label="Atalhos"
+      className="grid w-full grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3"
+    >
       {abas.map((a, idx) => {
         const active = pathname === a.href;
         const color = colorClasses[idx % colorClasses.length];
@@ -39,8 +42,8 @@ export function AtalhosAbaCaderno() {
             key={a.href}
             href={a.href}
             className={[
-              "inline-flex items-center gap-2",
-              "px-3 py-2",
+              "inline-flex w-full items-center justify-center gap-2",
+              "min-h-12 px-4 py-3",
               "rounded-full border",
               "shadow-sm",
               "text-sm font-semibold",

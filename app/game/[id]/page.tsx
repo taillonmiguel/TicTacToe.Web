@@ -107,116 +107,164 @@ export default function GamePage() {
 
   return (
     <div className="min-h-screen">
-      <main className="mx-auto max-w-4xl px-4">
+      <main className="mx-auto w-full max-w-5xl px-4 pt-8 pb-10 md:pt-10 lg:pt-12">
         {!game ? (
-          <div className="mt-16 containerCard p-6 text-sm opacity-80">
+          <div className="containerCard p-6 text-sm opacity-80">
             {query.isLoading ? "Carregando jogo..." : "Sem dados do jogo."}
           </div>
         ) : (
-          <div className="mt-16 grid grid-cols-1 items-start gap-6 md:grid-cols-[260px_1fr]">
-            <aside className="rounded-2xl border border-foreground/10 bg-white/80 p-4 shadow-sm">
-              <div className="flex flex-col gap-2 text-sm leading-6">
-                <Link
-                  className="underline opacity-90 hover:opacity-100"
-                  href="/"
-                >
-                  Voltar
-                </Link>
-                <div>Conexão: {connectionStatus}</div>
-                <div>Game: {gameId}</div>
-                <div>
-                  Você é{" "}
-                  <span className="font-semibold">{seuSimbolo ?? "?"}</span>
-                </div>
-                <div>
-                  Turno: <span className="font-semibold">{turnoSymbol}</span>
-                </div>
-
-                <div className={xAtivo ? "marcaTexto" : ""}>
-                  <div className="mt-2 inline-flex items-center gap-2">
-                    <span className="rounded-md border border-foreground/15 bg-white/70 px-2 py-0.5 text-xs font-semibold">
-                      X
-                    </span>
-                    <span className="font-medium">{jogadorX ?? "-"}</span>
-                  </div>
-                </div>
-
-                <div className={oAtivo ? "marcaTexto" : ""}>
-                  <div className="mt-2 inline-flex items-center gap-2">
-                    <span className="rounded-md border border-foreground/15 bg-white/70 px-2 py-0.5 text-xs font-semibold">
-                      O
-                    </span>
-                    <span className="font-medium">{jogadorO ?? "-"}</span>
-                  </div>
-                </div>
+          <div>
+            <div className="mb-4 flex items-center justify-between gap-3 rounded-2xl border border-foreground/10 bg-white/80 px-4 py-3 text-sm shadow-sm lg:hidden">
+              <Link className="underline opacity-90 hover:opacity-100" href="/">
+                Voltar
+              </Link>
+              <div className="text-xs opacity-70">
+                Conexão: {connectionStatus}
               </div>
-            </aside>
+            </div>
 
-            <section
-              className={
-                "rounded-2xl border border-foreground/10 bg-white/70 p-6 shadow-sm"
-              }
-            >
-              <div
-                className={[
-                  "mx-auto w-fit rounded-2xl",
-                  isAnyWin ? "ring-4 ring-green-500/25 animate-pulse" : "",
-                  isDraw ? "grayscale opacity-70" : "",
-                ]
-                  .filter(Boolean)
-                  .join(" ")}
-              >
-                <Board
-                  board={game.board}
-                  canPlay={canPlay}
-                  onPlay={async (pos) => {
-                    await sendMove(pos);
-                  }}
-                  className="grid grid-cols-3 gap-3"
-                  highlightIndices={linhaVencedora}
-                />
-              </div>
-
-              <div className="mt-5 flex flex-col gap-2 text-sm">
-                <div>
-                  Status:{" "}
-                  <span className="font-medium">
-                    {String(game.statusRaw ?? "-")}
-                  </span>
-                </div>
-                <div>
-                  {finished
-                    ? "Partida finalizada"
-                    : canPlay
-                      ? "Sua vez"
-                      : "Aguardando o outro jogador"}
-                </div>
-                {resultLabel ? (
-                  <div className="font-medium">{resultLabel}</div>
-                ) : null}
-              </div>
-
-              <div className="mt-4 flex flex-wrap items-center gap-3">
-                <Link
-                  className="underline opacity-90 hover:opacity-100"
-                  href={`/game/${gameId}/actions`}
-                >
-                  Ver Ações
-                </Link>
-
-                {finished ? (
-                  <Button
-                    variant="secondary"
-                    onClick={() => {
-                      clearMatch();
-                      router.push("/");
-                    }}
+            <div className="grid grid-cols-1 items-start gap-4 lg:grid-cols-[260px_1fr] lg:gap-6">
+              <aside className="rounded-2xl border border-foreground/10 bg-white/80 p-4 shadow-sm">
+                <div className="hidden flex-col gap-2 text-sm leading-6 lg:flex">
+                  <Link
+                    className="underline opacity-90 hover:opacity-100"
+                    href="/"
                   >
-                    Jogar novamente
-                  </Button>
-                ) : null}
-              </div>
-            </section>
+                    Voltar
+                  </Link>
+                  <div>Conexão: {connectionStatus}</div>
+                </div>
+
+                <div className="mt-3 flex flex-col gap-2 text-sm leading-6">
+                  <div className="flex items-center gap-2">
+                    <span className="opacity-80">Game:</span>
+                    <span
+                      className="max-w-[min(60vw,22rem)] truncate font-mono text-xs sm:text-sm lg:max-w-full"
+                      title={gameId}
+                    >
+                      {gameId}
+                    </span>
+                  </div>
+
+                  <div>
+                    Você é{" "}
+                    <span className="font-semibold">{seuSimbolo ?? "?"}</span>
+                  </div>
+
+                  <div>
+                    É a vez de:{" "}
+                    <span className="font-semibold">{turnoSymbol}</span>
+                  </div>
+
+                  <div className="mt-2 grid grid-cols-2 gap-2">
+                    <div
+                      className={[
+                        "rounded-lg border border-foreground/10 px-3 py-2 text-sm",
+                        xAtivo ? "ring-2 ring-foreground/30" : "",
+                      ]
+                        .filter(Boolean)
+                        .join(" ")}
+                    >
+                      <div className="text-xs opacity-70">X</div>
+                      <div className="font-medium">
+                        {xAtivo ? (
+                          <span className="marcaTexto">{jogadorX ?? "-"}</span>
+                        ) : (
+                          (jogadorX ?? "-")
+                        )}
+                      </div>
+                    </div>
+                    <div
+                      className={[
+                        "rounded-lg border border-foreground/10 px-3 py-2 text-sm",
+                        oAtivo ? "ring-2 ring-foreground/30" : "",
+                      ]
+                        .filter(Boolean)
+                        .join(" ")}
+                    >
+                      <div className="text-xs opacity-70">O</div>
+                      <div className="font-medium">
+                        {oAtivo ? (
+                          <span className="marcaTexto">{jogadorO ?? "-"}</span>
+                        ) : (
+                          (jogadorO ?? "-")
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </aside>
+
+              <section
+                className={
+                  "rounded-2xl border border-foreground/10 bg-white/70 p-4 shadow-sm sm:p-6"
+                }
+              >
+                <h1 className="text-center text-[clamp(28px,6vw,44px)] font-extrabold tracking-tight">
+                  Jogo da Velha
+                </h1>
+
+                <div
+                  className={[
+                    "mx-auto mt-4 w-full max-w-[min(92vw,420px)] aspect-square overflow-hidden rounded-2xl",
+                    isAnyWin ? "ring-4 ring-green-500/25 animate-pulse" : "",
+                    isDraw ? "grayscale opacity-70" : "",
+                  ]
+                    .filter(Boolean)
+                    .join(" ")}
+                >
+                  <Board
+                    board={game.board}
+                    canPlay={canPlay}
+                    onPlay={async (pos) => {
+                      await sendMove(pos);
+                    }}
+                    className="h-full w-full"
+                    highlightIndices={linhaVencedora}
+                  />
+                </div>
+
+                <div className="mt-5 flex flex-col gap-2 text-sm">
+                  <div>
+                    Status:{" "}
+                    <span className="font-medium">
+                      {String(game.statusRaw ?? "-")}
+                    </span>
+                  </div>
+                  <div>
+                    {finished
+                      ? "Partida finalizada"
+                      : canPlay
+                        ? "Sua vez"
+                        : "Aguardando o outro jogador"}
+                  </div>
+                  {resultLabel ? (
+                    <div className="font-medium">{resultLabel}</div>
+                  ) : null}
+                </div>
+
+                <div className="mt-4 flex flex-wrap items-center gap-3">
+                  <Link
+                    className="underline opacity-90 hover:opacity-100"
+                    href={`/game/${gameId}/actions`}
+                  >
+                    Ver Ações
+                  </Link>
+
+                  {finished ? (
+                    <Button
+                      variant="secondary"
+                      onClick={() => {
+                        clearMatch();
+                        router.push("/");
+                      }}
+                    >
+                      Jogar novamente
+                    </Button>
+                  ) : null}
+                </div>
+              </section>
+            </div>
           </div>
         )}
       </main>

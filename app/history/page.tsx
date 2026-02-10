@@ -53,7 +53,15 @@ export default function HistoryPage() {
                     key={id}
                     className="rounded-lg border border-foreground/10 p-3"
                   >
-                    <div className="text-sm font-medium">Game: {id}</div>
+                    <div className="text-sm font-medium">
+                      <span className="opacity-80">Game:</span>{" "}
+                      <span
+                        className="inline-block max-w-full break-all"
+                        title={id}
+                      >
+                        {id}
+                      </span>
+                    </div>
                     <div className="mt-1 text-sm opacity-80">
                       X: {jogadorX} · O: {jogadorO}
                     </div>

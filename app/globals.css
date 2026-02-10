@@ -246,6 +246,7 @@ body {
 
 .overlayCard {
   width: min(520px, 100%);
+  max-height: calc(100dvh - 36px);
   border-radius: 18px;
   border: 1px solid rgba(0, 0, 0, 0.12);
   background: rgba(255, 255, 255, 0.92);
@@ -253,6 +254,7 @@ body {
   padding: 22px 18px;
   position: relative;
   overflow: hidden;
+  overflow-y: auto;
 }
 
 .overlayShake {

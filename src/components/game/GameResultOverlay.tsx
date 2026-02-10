@@ -72,17 +72,25 @@ export function GameResultOverlay(props: Props) {
 
       <div className={`overlayCard ${isLose ? "overlayShake" : ""}`.trim()}>
         <div className="text-center">
-          <div className="text-3xl font-extrabold tracking-tight">
+          <div className="text-2xl font-extrabold tracking-tight sm:text-3xl">
             {props.title}
           </div>
-          <div className="mt-2 text-lg font-semibold">{props.description}</div>
+          <div className="mt-2 text-base font-semibold sm:text-lg">
+            {props.description}
+          </div>
         </div>
 
         <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center">
-          <Button variant="secondary" onClick={props.onBack}>
+          <Button
+            variant="secondary"
+            onClick={props.onBack}
+            className="w-full py-3 sm:w-auto"
+          >
             Voltar
           </Button>
-          <Button onClick={props.onReplay}>Jogar novamente</Button>
+          <Button onClick={props.onReplay} className="w-full py-3 sm:w-auto">
+            Jogar novamente
+          </Button>
         </div>
       </div>
     </div>

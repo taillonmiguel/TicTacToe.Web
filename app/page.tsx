@@ -7,9 +7,9 @@ export default function Home() {
     <div className="min-h-screen">
       <main className="mx-auto flex min-h-screen w-full max-w-xl flex-col items-center justify-center px-4 py-8 sm:py-10">
         <Card className="w-full">
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-5 sm:gap-6">
             <div className="text-center">
-              <h1 className="text-3xl font-extrabold tracking-tight">
+              <h1 className="text-[clamp(26px,6vw,36px)] font-extrabold tracking-tight">
                 Jogo da Velha Online
               </h1>
             </div>
